@@ -20,7 +20,7 @@ To save without the security check, use:
 
     $model->saveWithoutCreatedBySecurity();
     
-To delete withou the security check (write permission), use:
+To delete without the security check (write permission), use:
 
     $model->deleteWithoutCreatedBySecurity();
     
