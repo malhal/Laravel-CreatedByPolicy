@@ -1,16 +1,18 @@
 # Laravel-CreatedBySecurity
-A trait that adds simple security to your models. It requires Laravel-CreatedBy which provides the functionality of tracking which user created and updated models. 
+A trait that adds simple security to your models. It requires [Laravel-CreatedBy](https://github.com/malhal/Laravel-CreatedBy) which provides the functionality of tracking which user created and updated models. 
 It provides create, write and read modes and world, authenticated and creator user-based security.
 
 In your model use this trait:
 
     use CreatedBySecurity;
+    
+Since it makes use of the [CreatedBy](https://github.com/malhal/Laravel-CreatedBy) trait you need to follow its setup instructions by adding the table columns and relations for the created_by_id and updated_by_id.
 
-Then you can override the default security levels by implementing protected variables, e.g. to prevent guests from reading:
+Wwhen querying models that use the trait, the security is automatically applied to the global scope, this means all queries will be secured. If read access is creator only then only the records they created will be returned. If there is no read access an authorization exception will be thrown. Similarly security will be applied to all model create, update and delete.
+
+You can override the default security levels by implementing protected variables, e.g. to prevent guests from reading:
 
     const WORLD_READ = true;
-
-Also when querying the security is automatically applied to the global scope, this means all queries will be verified. If read access is creator only then only the records they created will be returned. If there is no read access an authorization exception will be thrown.
 
 To temporarily disable security checking on a query use:
 
