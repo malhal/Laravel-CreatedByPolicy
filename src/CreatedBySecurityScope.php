@@ -49,7 +49,6 @@ class CreatedBySecurityScope implements Scope
                 throw (new ModelNotFoundException)->setModel(get_class($model));
             }
             else if ($model->getCreatorRead()) {
-                echo 'fe';
                 $createdByRelationName = $model->createdByRelationName();
                 $createdBy = $model->$createdByRelationName();
                 $builder->where($createdBy->getForeignKey(), $user->getKey());

@@ -66,7 +66,7 @@ trait CreatedBySecurity
 
             if (!$model->getWorldWrite() && !$model->getAuthenticatedWrite() && $model->getCreatorWrite()) {
                 $user = $model->currentUser();
-                if (is_null($user) || $user != $model->createdBy) {
+                if (is_null($user) || $user->getKey() != $model->getAttribute($model->createdByForeignKey())) {
                     throw new AuthorizationException('Only the creator can write.');
                 }
             }
