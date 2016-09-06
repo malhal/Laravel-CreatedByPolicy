@@ -13,15 +13,16 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use \Illuminate\Database\Eloquent\Scope;
 use \Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
-class CreatedBySecurityScope implements Scope
+class CreatedByPolicyScope implements Scope
 {
     /**
      * All of the extensions to be added to the builder.
      *
      * @var array
      */
-    protected $extensions = ['WithCreatedBySecurity', 'WithoutCreatedBySecurity'];
+    protected $extensions = ['WithCreatedByPolicy', 'WithoutCreatedByPolicy'];
 
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -32,27 +33,24 @@ class CreatedBySecurityScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        $this->applyCreatedBySecurity($builder);
+        // this global scope is applied if the only read access is creatorRead, done in CreatedByPolicy.
+        $this->applyCreatedByPolicy($builder);
     }
 
-    protected function applyCreatedBySecurity(Builder $builder){
-        $model = $builder->getModel();
+    protected function applyCreatedByPolicy(Builder $builder){
 
-        if (!$model->getWorldRead() && !$model->getAuthenticatedRead() && !$model->getCreatorRead()){
-            throw new AuthorizationException('No-one can read.');
+        $model = $builder->getModel();
+        $user = Auth::user();
+        // the CreatedByPolicy already checks for guest so this is only for safety.
+        if($user instanceof CreatedByGuest){
+            $builder->whereNull($model->getKeyName());
+            // we won't exception so scope can be removed for some reason.
+            // throw InvalidArgumentException(get_class($this).' cannot be applied to guest');
         }
-        // if the permissions are set to the creator only then filter the query.
-        else if (!$model->getWorldRead() && ($model->getAuthenticatedRead() || $model->getCreatorRead())){
-            $user = $model->currentUser();
-            if (is_null($user)) {
-                //throw new AuthorizationException('Only the creator can read.');
-                throw (new ModelNotFoundException)->setModel(get_class($model));
-            }
-            else if ($model->getCreatorRead()) {
-                $createdByRelationName = $model->createdByRelationName();
-                $createdBy = $model->$createdByRelationName();
-                $builder->where($createdBy->getForeignKey(), $user->getKey());
-            }
+        else {
+            $createdByRelationName = $model->createdByRelationName();
+            $createdBy = $model->$createdByRelationName();
+            $builder->where($createdBy->getForeignKey(), $user->getKey());
         }
     }
 
@@ -75,10 +73,10 @@ class CreatedBySecurityScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void
      */
-    protected function addWithCreatedBySecurity(Builder $builder) {
-        $builder->macro('withCreatedBySecurity', function (Builder $builder) {
+    protected function addWithCreatedByPolicy(Builder $builder) {
+        $builder->macro('withCreatedByPolicy', function (Builder $builder) {
             $builder->withoutGlobalScope($this);
-            $this->applyCreatedBySecurity($builder);
+            $this->applyCreatedByPolicy($builder);
             return $builder;
         });
     }
@@ -89,9 +87,9 @@ class CreatedBySecurityScope implements Scope
      * @param  \Illuminate\Database\Eloquent\Builder  $builder
      * @return void
      */
-    protected function addWithoutCreatedBySecurity(Builder $builder)
+    protected function addWithoutCreatedByPolicy(Builder $builder)
     {
-        $builder->macro('withoutCreatedBySecurity', function (Builder $builder) {
+        $builder->macro('withoutCreatedByPolicy', function (Builder $builder) {
             return $builder->withoutGlobalScope($this);
         });
     }
