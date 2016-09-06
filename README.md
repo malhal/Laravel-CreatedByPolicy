@@ -16,7 +16,7 @@ You can override the default security levels by implementing protected variables
 
     const WORLD_READ = true;
 
-Now you can use the built in authorization methods, exceptions will be thrown in the case of no access, and for creatorRead a global scope will be added to limit queries to only records created by the currently authenticated user.
+Now you can use Laravel's built-in [authorization](https://laravel.com/docs/5.3/authorization) methods as normal, exceptions will be thrown in the case of no access, and for creatorRead a global scope will be added to limit queries to only records created by the currently authenticated user.
 
 To temporarily disable security checking on a query use:
 
