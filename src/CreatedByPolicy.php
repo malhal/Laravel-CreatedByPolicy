@@ -140,4 +140,11 @@ trait CreatedByPolicy
         }
         return true;
     }
+
+    public static function register(){
+        // Laravel policies only work if the user isn't null so we set a guest user that can be checked against.
+        if(!Auth::check()) {
+            Auth::setUser(new CreatedByGuest());
+        }
+    }
 }
