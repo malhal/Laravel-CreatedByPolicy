@@ -57,7 +57,6 @@ You shouldn't need this but just in case, to temporarily disable security checki
 
     $query->withoutCreatedBySecurity()
 
-    
 ## Installation
 
 [PHP](https://php.net) 5.6.4+ and [Laravel](http://laravel.com) 5.3+ are required.
