@@ -1,5 +1,5 @@
 # Laravel-CreatedBySecurity
-A trait that adds simple security to your model authorization policies. It provides create, write and read modes and world, authenticated and creator user-based security.
+A trait that implements authorization using simple booleans in your policy classes. It provides create, write and read modes and world, authenticated and creator user-based security.
 
 It requires [Laravel-CreatedBy](https://github.com/malhal/Laravel-CreatedBy) which provides the functionality of tracking which user created and updated models, so please follow its setup instructions including adding the table columns and relations for the created_by_id and updated_by_id.
 
