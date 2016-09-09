@@ -6,13 +6,6 @@
  *  Copyright © 2016 Malcolm Hall. All rights reserved.
  */
 
-/**
- * Created by PhpStorm.
- * User: mh
- * Date: 06/09/2016
- * Time: 22:13
- */
-
 namespace Malhal\CreatedByPolicy;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;

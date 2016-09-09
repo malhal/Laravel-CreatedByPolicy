@@ -43,13 +43,13 @@ Now you can use Laravel's built-in [authorization](https://laravel.com/docs/5.3/
 
 Laravel has a limitation that policies only works if there is a user, since our policies include world read/write (guest access) we need to workaround it with a provider. In `config/app.php` add to the providers array:
 
-    Malhal\CreatedBySecurity\WorldServiceProvider::class
+    Malhal\CreatedByPolicy\WorldServiceProvider::class
 
 All this does is if `Auth::user()` is null it sets it to a new User which has no ID. This means that `Auth::check()` will no longer work as designed, and instead you have to check for guest with `is_null(Auth::user()->getKey())`.
 
 You shouldn't need to but just in case, disable security checking on a query that alreay had the global scope applied remove it with:
 
-    $query->withoutCreatedBySecurity()
+    $query->withoutCreatedByPolicy()
 
 ## Installation
 
