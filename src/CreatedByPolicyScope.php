@@ -1,12 +1,12 @@
 <?php
 /**
- *  Laravel-CreatedBySecurity (http://github.com/malhal/Laravel-CreatedBySecurity)
+ *  Laravel-CreatedByPolicy (http://github.com/malhal/Laravel-CreatedByPolicy)
  *
  *  Created by Malcolm Hall on 22/8/2016.
  *  Copyright © 2016 Malcolm Hall. All rights reserved.
  */
 
-namespace Malhal\CreatedBySecurity;
+namespace Malhal\CreatedByPolicy;
 
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

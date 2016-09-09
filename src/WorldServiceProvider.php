@@ -1,13 +1,12 @@
 <?php
 /**
- *  Laravel-CreatedBy (http://github.com/malhal/Laravel-CreatedBy)
- *  CreatedByServiceProvider.php
+ *  Laravel-CreatedByPolicy (http://github.com/malhal/Laravel-CreatedByPolicy)
  *
  *  Created by Malcolm Hall on 9/9/2016.
  *  Copyright © 2016 Malcolm Hall. All rights reserved.
  */
 
-namespace Malhal\CreatedBySecurity;
+namespace Malhal\CreatedByPolicy;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;

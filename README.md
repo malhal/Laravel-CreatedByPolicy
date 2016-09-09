@@ -1,4 +1,4 @@
-# Laravel-CreatedBySecurity
+# Laravel-CreatedByPolicy
 A trait that implements authorization using simple booleans in your policy classes. It provides create, write and read modes and world, authenticated and creator user-based security.
 
 It requires [Laravel-CreatedBy](https://github.com/malhal/Laravel-CreatedBy) which provides the functionality of tracking which user created and updated models, so please follow its setup instructions including adding the table columns and relations for the created_by_id and updated_by_id.
@@ -55,8 +55,8 @@ You shouldn't need to but just in case, disable security checking on a query tha
 
 [PHP](https://php.net) 5.6.4+ and [Laravel](http://laravel.com) 5.3+ are required.
 
-To get the latest version of Laravel CreatedBySecurity, simply require the project using [Composer](https://getcomposer.org):
+To get the latest version of Laravel CreatedByPolicy, simply require the project using [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require malhal/createdbysecurity dev-master
+$ composer require malhal/laravel-createdbypolicy dev-master
 ```
