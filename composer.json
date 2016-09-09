@@ -1,7 +1,7 @@
 {
-    "name": "malhal/createdbysecurity",
+    "name": "malhal/createdbypolicy",
     "description": "Simple security for Laravel models",
-    "keywords": ["laravel", "framework", "security", "permissions", "createdBy", "updatedBy", "user", "models", "CreatedBySecurity", "Laravel Security", "Laravel-CreatedBySecurity", "Malcolm Hall", "malhal"],
+    "keywords": ["laravel", "framework", "security", "permissions", "createdBy", "updatedBy", "user", "models", "CreatedByPolicy", "Laravel Security", "Laravel-CreatedByPolicy", "Malcolm Hall", "malhal"],
     "license": "MIT",
     "authors": [
         {
@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Malhal\\CreatedBySecurity\\": "src/"
+            "Malhal\\CreatedByPolicy\\": "src/"
         }
     },
     "autoload-dev": {
