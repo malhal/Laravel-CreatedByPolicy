@@ -42,7 +42,7 @@ class CreatedByPolicyScope implements Scope
         $model = $builder->getModel();
         $user = Auth::user();
         // the CreatedByPolicy already checks for guest so this is only for safety.
-        if($user instanceof CreatedByGuest){
+        if(is_null($user->getKey())){
             $builder->whereNull($model->getKeyName());
             // we won't exception so scope can be removed for some reason.
             // throw InvalidArgumentException(get_class($this).' cannot be applied to guest');

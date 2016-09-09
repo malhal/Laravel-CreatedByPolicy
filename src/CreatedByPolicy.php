@@ -1,6 +1,6 @@
 <?php
 /**
- *  Laravel-CreatedBy (http://github.com/malhal/Laravel-CreatedBy)
+ *  Laravel-CreatedBy (http://github.com/malhal/Laravel-CreatedBySecurity)
  *  CreatedByPolicy.php
  *
  *  Created by Malcolm Hall on 6/9/2016.
@@ -16,12 +16,8 @@
 
 namespace Malhal\CreatedBySecurity;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 
 trait CreatedByPolicy
 {
@@ -96,7 +92,7 @@ trait CreatedByPolicy
 
     protected function canCreate($user){
         if (!$this->getWorldCreate() && $this->getAuthenticatedCreate()) {
-            if ($user instanceof CreatedByGuest) {
+            if (is_null($user->getKey())) {
                 $this->deny('Only authenticated can create.'); // CREATE not permitted
             }
         } else if (!$this->getWorldCreate()) {
@@ -110,12 +106,12 @@ trait CreatedByPolicy
 
         if (!$this->getWorldWrite() && !$this->getAuthenticatedWrite() && $this->getCreatorWrite()) {
             $user = Auth::user();
-            if ($user instanceof CreatedByGuest || $user->getKey() != $model->getAttribute($model->createdByForeignKey())) {
+            if (is_null($user->getKey()) || $user->getKey() != $model->getAttribute($model->createdByForeignKey())) {
                 $this->deny('Only the creator can write.');
             }
         }
         else if (!$this->getWorldWrite() && $this->getAuthenticatedWrite()) {
-            if ($user instanceof CreatedByGuest) {
+            if (is_null($user->getKey())) {
                 $this->deny('Only authenticated can write.');
             }
         } else if (!$this->getWorldWrite()) {
@@ -130,7 +126,7 @@ trait CreatedByPolicy
         }
         else if (!$this->getWorldRead() && ($this->getAuthenticatedRead() || $this->getCreatorRead())){
             $user = Auth::user();
-            if ($user instanceof CreatedByGuest) {
+            if (is_null($user->getKey())) {
                 //throw new AuthorizationException('Only the creator can read.');
                 throw (new ModelNotFoundException())->setModel(get_class($model));
             }
@@ -139,12 +135,5 @@ trait CreatedByPolicy
             }
         }
         return true;
-    }
-
-    public static function register(){
-        // Laravel policies only work if the user isn't null so we set a guest user that can be checked against.
-        if(!Auth::check()) {
-            Auth::setUser(new CreatedByGuest());
-        }
     }
 }
