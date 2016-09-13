@@ -66,7 +66,7 @@ trait CreatedByPolicy
     {
         return defined('self::CREATOR_WRITE') ? self::CREATOR_WRITE : true;
     }
-
+/*
     public function create($user)
     {
         return $this->canCreate($user);
@@ -77,12 +77,17 @@ trait CreatedByPolicy
         return $this->canWrite($user, $model);
     }
 
+    public function delete($user, $model){
+
+        return $this->canWrite($user, $model);
+    }
+
     public function show($user, $model){
 
         return $this->canRead($user, $model);
     }
-
-    protected function canCreate($user){
+*/
+    public function create($user){
         if (!$this->getWorldCreate() && $this->getAuthenticatedCreate()) {
             if (is_null($user->getKey())) {
                 $this->deny('Only authenticated can create.'); // CREATE not permitted
@@ -94,10 +99,10 @@ trait CreatedByPolicy
         return true;
     }
 
-    protected function canWrite($user, $model){
+    public function write($user, $model){
 
         if (!$this->getWorldWrite() && !$this->getAuthenticatedWrite() && $this->getCreatorWrite()) {
-            $user = Auth::user();
+            //$user = Auth::user();
             if (is_null($user->getKey()) || $user->getKey() != $model->getAttribute($model->createdByForeignKey())) {
                 $this->deny('Only the creator can write.');
             }
@@ -112,20 +117,20 @@ trait CreatedByPolicy
         return true;
     }
 
-    protected function canRead($user, $model){
+    public function read($user, $model){
         if (!$this->getWorldRead() && !$this->getAuthenticatedRead() && !$this->getCreatorRead()){
             $this->deny('No-one can read.');
         }
         else if (!$this->getWorldRead() && ($this->getAuthenticatedRead() || $this->getCreatorRead())){
-            $user = Auth::user();
             if (is_null($user->getKey())) {
-                //throw new AuthorizationException('Only the creator can read.');
+                // optimise by throwing here rather than have the query run and find nothing.
                 throw (new ModelNotFoundException())->setModel(get_class($model));
             }
             else if ($this->getCreatorRead()) {
                 $model::addGlobalScope(new CreatedByPolicyScope());
             }
         }
+
         return true;
     }
 }
