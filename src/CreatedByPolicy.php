@@ -103,7 +103,7 @@ trait CreatedByPolicy
 
         if (!$this->getWorldWrite() && !$this->getAuthenticatedWrite() && $this->getCreatorWrite()) {
             //$user = Auth::user();
-            if (is_null($user->getKey()) || $user->getKey() != $model->getAttribute($model->createdByForeignKey())) {
+            if (is_null($user->getKey()) || $user->getKey() != $model->getCreatedByForeignKey()) {
                 $this->deny('Only the creator can write.');
             }
         }
@@ -118,6 +118,7 @@ trait CreatedByPolicy
     }
 
     public function read($user, $model){
+
         if (!$this->getWorldRead() && !$this->getAuthenticatedRead() && !$this->getCreatorRead()){
             $this->deny('No-one can read.');
         }

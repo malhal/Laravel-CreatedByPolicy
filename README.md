@@ -51,6 +51,12 @@ You shouldn't need to but just in case, disable security checking on a query tha
 
     $query->withoutCreatedByPolicy()
 
+There is an issue when using the CreatedBy trait on the User model with auto-increment. MySQL cannot insert a new record and include a foreign key to the newly created ID. This issue doesn't occur if using UUID for keys, however you can still use the policy with auto-increment by implementing this method in your User model, which assumes user records are always created by the user:
+
+    public function getCreatedByForeignKey(){
+        return $this->getKey();
+    }
+    
 ## Installation
 
 [PHP](https://php.net) 5.6.4+ and [Laravel](http://laravel.com) 5.3+ are required.
