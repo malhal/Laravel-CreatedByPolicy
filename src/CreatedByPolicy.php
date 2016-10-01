@@ -88,6 +88,7 @@ trait CreatedByPolicy
     }
 */
     public function create($user){
+
         if (!$this->getWorldCreate() && $this->getAuthenticatedCreate()) {
             if (is_null($user->getKey())) {
                 $this->deny('Only authenticated can create.'); // CREATE not permitted

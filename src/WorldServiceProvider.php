@@ -22,9 +22,10 @@ class WorldServiceProvider extends ServiceProvider
     {
         // Laravel policies only work if the user isn't null so for world reads or writes we need to assign a dummpy user.
         // From now on to check for guest use is_null(Auth::user()->getKey())
-        if(!Auth::check()) {
+        $guard = Auth::guard('web');
+        if(!$guard->check()) {
             $userClass = config('auth.providers.users.model');
-            Auth::setUser(new $userClass());
+            $guard->setUser(new $userClass());
         }
     }
 
